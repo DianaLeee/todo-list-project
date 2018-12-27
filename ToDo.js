@@ -7,6 +7,7 @@ import {
   Dimensions,
   TextInput
 } from "react-native";
+import { Icon } from "react-native-elements";
 import PropTypes from "prop-types";
 
 const { width, height } = Dimensions.get("window");
@@ -71,7 +72,8 @@ export default class ToDo extends Component {
           <View style={styles.actions}>
             <TouchableOpacity onPressOut={this._finishEditing}>
               <View style={styles.actionContainer}>
-                <Text style={styles.actionText}>✅</Text>
+                {/* <Text style={styles.actionText}>✅</Text> */}
+                <Icon name="check" />
               </View>
             </TouchableOpacity>
           </View>
@@ -79,12 +81,14 @@ export default class ToDo extends Component {
           <View style={styles.actions}>
             <TouchableOpacity onPressOut={this._startEditing}>
               <View style={styles.actionContainer}>
-                <Text style={styles.actionText}>✏️</Text>
+                {/* <Text style={styles.actionText}>✏️</Text> */}
+                <Icon name="mode-edit" />
               </View>
             </TouchableOpacity>
             <TouchableOpacity onPressOut={() => deleteToDo(id)}>
               <View style={styles.actionContainer}>
-                <Text style={styles.actionText}>❌</Text>
+                {/* <Text style={styles.actionText}>❌</Text> */}
+                <Icon name="cancel" />
               </View>
             </TouchableOpacity>
           </View>
@@ -102,7 +106,7 @@ export default class ToDo extends Component {
     }
   };
   _startEditing = () => {
-    const { text } = this.props;
+    // const { text } = this.props;
     this.setState({ isEditing: true });
   };
   _finishEditing = () => {
