@@ -71,10 +71,10 @@ export default class App extends React.Component {
     try {
       const toDos = await AsyncStorage.getItem("toDos");
       const parsedToDos = JSON.parse(toDos);
-      console.log("_loadToDos::", toDos);
+      // console.log("_loadToDos::", toDos);
       this.setState({
         loadedToDos: true,
-        toDos: parsedToDos
+        toDos: parsedToDos || {}
       });
     } catch (err) {
       console.log(err);
@@ -120,14 +120,14 @@ export default class App extends React.Component {
   };
   _uncompletedToDo = id => {
     this.setState(prevState => {
+      prevState.toDos[id] = {
+        ...prevState.toDos[id],
+        isCompleted: false
+      };
       const newState = {
         ...prevState,
         toDos: {
-          ...prevState.toDos,
-          [id]: {
-            ...prevState.toDos[id],
-            isCompleted: false
-          }
+          ...prevState.toDos
         }
       };
       this._saveToDos(newState.toDos);
@@ -136,14 +136,14 @@ export default class App extends React.Component {
   };
   _completedToDo = id => {
     this.setState(prevState => {
+      prevState.toDos[id] = {
+        ...prevState.toDos[id],
+        isCompleted: true
+      };
       const newState = {
         ...prevState,
         toDos: {
-          ...prevState.toDos,
-          [id]: {
-            ...prevState.toDos[id],
-            isCompleted: true
-          }
+          ...prevState.toDos
         }
       };
       this._saveToDos(newState.toDos);
@@ -152,24 +152,25 @@ export default class App extends React.Component {
   };
   _updateToDo = (id, text) => {
     this.setState(prevState => {
+      prevState.toDos[id] = {
+        ...prevState.toDos[id],
+        text: text
+        // isCompleted: true
+      };
       const newState = {
         ...prevState,
         toDos: {
-          ...prevState.toDos,
-          [id]: {
-            ...prevState.toDos[id],
-            text: text
-          }
+          ...prevState.toDos
         }
       };
-      // console.log("_updateToDo::", prevState);
+      console.log("_updateToDo::", newState);
       this._saveToDos(newState.toDos);
       return { ...newState };
     });
   };
   _saveToDos = newToDos => {
     const saveToDos = AsyncStorage.setItem("toDos", JSON.stringify(newToDos));
-    // console.log("_saveToDos::", newToDos);
+    console.log("_saveToDos::", newToDos);
   };
 }
 

@@ -76,6 +76,7 @@ export default class ToDo extends Component {
           <View style={styles.actions}>
             <TouchableOpacity onPressOut={this._startEditing}>
               <View style={styles.actionContainer}>
+                {/* <Text style={styles.actionText}>✏️</Text> */}
                 <Icon name="mode-edit" color="black" />
               </View>
             </TouchableOpacity>
@@ -86,6 +87,7 @@ export default class ToDo extends Component {
               }}
             >
               <View style={styles.actionContainer}>
+                {/* <Text style={styles.actionText}>❌</Text> */}
                 <Icon name="cancel" color="red" />
               </View>
             </TouchableOpacity>
