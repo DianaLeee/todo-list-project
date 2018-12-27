@@ -1,13 +1,22 @@
 import React, {Component} from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Dimensions, TextInput } from "react-native";
+import PropTypes from "prop-types";
+
 const { width, height } = Dimensions.get("window");
 
 export default class ToDo extends Component {
+    constructor(props) {
+        super(props);
+        this.state = { isEditing: false, toDoValue: props.text };
+    }
+    static propTypes = {
+        text: PropTypes.string.isRequired,
+        isCompleted: PropTypes.bool.isRequired,
+    };
     state = {
         isEditing: false,
-        isCompleted: false,
         toDoValue: ""
-    };
+    }
     render() {
         const {isCompleted, isEditing, toDoValue} = this.state;
         const { text } = this.props;
@@ -66,24 +75,19 @@ export default class ToDo extends Component {
                 isCompleted: !prevState.isCompleted
             });
         });
-    }
+    };
     _startEditing = () => {
         const { text } = this.props;
-        this.setState({isEditing: true, toDoValue: text});
-        // this.setState(prevState => {
-        //     return {
-        //         isEditing: true
-        //     }
-        // });
-    }
+        this.setState({isEditing: true});
+    };
     _finishEditing = () => {
         this.setState({
-            isEditing: false
+            isEditing: false,
         });
-    }
-    _controlInput = (text) => {
+    };
+    _controlInput = text => {
         this.setState({ toDoValue : text })
-    }
+    };
 }
 const styles = StyleSheet.create({
     container: {
@@ -124,7 +128,6 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         width: width / 2,
-        justifyContent: "space-between",
     },
     actions: {
         flexDirection: "row",
