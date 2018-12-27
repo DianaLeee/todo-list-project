@@ -1,8 +1,17 @@
-import React from 'react';
-import { StyleSheet, Text, View, StatusBar, TextInput, Dimensions, Platform, ScrollView } from 'react-native';
+import React from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  StatusBar,
+  TextInput,
+  Dimensions,
+  Platform,
+  ScrollView
+} from "react-native";
 import { AppLoading } from "expo";
 import ToDo from "./ToDo";
-import uuidv1 from "uuid/v1"
+import uuidv1 from "uuid/v1";
 const { height, width } = Dimensions.get("window");
 
 export default class App extends React.Component {
@@ -13,30 +22,32 @@ export default class App extends React.Component {
   };
   componentDidMount = () => {
     this._loadToDos();
-  }
+  };
   render() {
-    const { newToDo , loadedToDos, toDos} = this.state;
-    if(!loadedToDos) {
-      return <AppLoading />
-    } 
+    const { newToDo, loadedToDos, toDos } = this.state;
+    if (!loadedToDos) {
+      return <AppLoading />;
+    }
     return (
       <View style={styles.container}>
         <StatusBar barStyle="light-content" />
         <Text style={styles.title}>To Do List</Text>
         <View style={styles.card}>
-          <TextInput 
-            style={styles.input} 
-            placeholder={"New To Do"} 
+          <TextInput
+            style={styles.input}
+            placeholder={"New To Do"}
             value={newToDo}
             onChangeText={this._controlNewToDo}
             placeholderTextColor={"#999"}
             returnKeyType={"done"}
             autoCorrect={false}
             onSubmitEditing={this._addToDo}
-            />
-            <ScrollView contentContainerStyle={styles.toDos}>
-              {Object.values(toDos).map(toDo => <ToDo key={toDo.id} {...toDo} />)}
-            </ScrollView>
+          />
+          <ScrollView contentContainerStyle={styles.toDos}>
+            {Object.values(toDos).map(toDo => (
+              <ToDo key={toDo.id} {...toDo} deleteToDo={this._deleteToDo} />
+            ))}
+          </ScrollView>
         </View>
       </View>
     );
@@ -53,7 +64,7 @@ export default class App extends React.Component {
   };
   _addToDo = () => {
     const { newToDo } = this.state;
-    if(newToDo !== "") {
+    if (newToDo !== "") {
       // this.setState({
       //   newToDo: ""
       // });
@@ -75,24 +86,36 @@ export default class App extends React.Component {
             ...newToDoObject
           }
         };
-        return {...newState};
-      }); 
+        return { ...newState };
+      });
     }
-  }
+  };
+  _deleteToDo = id => {
+    this.setState(prevState => {
+      const toDos = prevState.toDos;
+      delete toDos[id];
+      const newState = {
+        ...prevState,
+        ...toDos
+      };
+      // console.log(id);
+      return { ...newState };
+    });
+  };
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F23657',
-    alignItems: 'center',
+    backgroundColor: "#F23657",
+    alignItems: "center"
   },
   title: {
     color: "white",
     fontSize: 30,
     marginTop: 50,
     fontWeight: "200",
-    marginBottom: 30,
+    marginBottom: 30
   },
   card: {
     backgroundColor: "white",
@@ -120,8 +143,8 @@ const styles = StyleSheet.create({
     borderBottomColor: "#bbb",
     borderBottomWidth: 1,
     fontSize: 25
-  }, 
+  },
   toDos: {
-    alignItems: "center",
+    alignItems: "center"
   }
 });
