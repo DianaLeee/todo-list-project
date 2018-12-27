@@ -71,7 +71,7 @@ export default class App extends React.Component {
     try {
       const toDos = await AsyncStorage.getItem("toDos");
       const parsedToDos = JSON.parse(toDos);
-      console.log(parsedToDos);
+      console.log("_loadToDos::", toDos);
       this.setState({
         loadedToDos: true,
         toDos: parsedToDos
@@ -162,26 +162,15 @@ export default class App extends React.Component {
           }
         }
       };
+      // console.log("_updateToDo::", prevState);
       this._saveToDos(newState.toDos);
       return { ...newState };
     });
   };
   _saveToDos = newToDos => {
-    console.log(JSON.stringify(newToDos));
     const saveToDos = AsyncStorage.setItem("toDos", JSON.stringify(newToDos));
+    // console.log("_saveToDos::", newToDos);
   };
-  // _loadToDos = async () => {
-  //   try {
-  //     const toDos = await AsyncStorage.getItem("toDos");
-  //     const parsedToDos = JSON.parse(toDos);
-  //     this.setState({
-  //       loadedToDos: true,
-  //       toDos: parsedToDos
-  //     });
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // };
 }
 
 const styles = StyleSheet.create({

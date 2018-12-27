@@ -26,10 +26,6 @@ export default class ToDo extends Component {
     completedToDo: PropTypes.func.isRequired,
     updateToDo: PropTypes.func.isRequired
   };
-  state = {
-    isEditing: false,
-    toDoValue: ""
-  };
   render() {
     const { isEditing, toDoValue } = this.state;
     const { text, id, deleteToDo, isCompleted } = this.props;
@@ -72,8 +68,7 @@ export default class ToDo extends Component {
           <View style={styles.actions}>
             <TouchableOpacity onPressOut={this._finishEditing}>
               <View style={styles.actionContainer}>
-                {/* <Text style={styles.actionText}>✅</Text> */}
-                <Icon name="check" />
+                <Icon name="check" color="green" />
               </View>
             </TouchableOpacity>
           </View>
@@ -81,14 +76,17 @@ export default class ToDo extends Component {
           <View style={styles.actions}>
             <TouchableOpacity onPressOut={this._startEditing}>
               <View style={styles.actionContainer}>
-                {/* <Text style={styles.actionText}>✏️</Text> */}
-                <Icon name="mode-edit" />
+                <Icon name="mode-edit" color="black" />
               </View>
             </TouchableOpacity>
-            <TouchableOpacity onPressOut={() => deleteToDo(id)}>
+            <TouchableOpacity
+              onPressOut={event => {
+                event.stopPropagation;
+                deleteToDo(id);
+              }}
+            >
               <View style={styles.actionContainer}>
-                {/* <Text style={styles.actionText}>❌</Text> */}
-                <Icon name="cancel" />
+                <Icon name="cancel" color="red" />
               </View>
             </TouchableOpacity>
           </View>
@@ -96,8 +94,9 @@ export default class ToDo extends Component {
       </View>
     );
   }
-  _toggleComplete = () => {
+  _toggleComplete = event => {
     //from App.js
+    event.stopPropagation();
     const { isCompleted, uncompletedToDo, completedToDo, id } = this.props;
     if (isCompleted) {
       uncompletedToDo(id);
@@ -105,11 +104,12 @@ export default class ToDo extends Component {
       completedToDo(id);
     }
   };
-  _startEditing = () => {
-    // const { text } = this.props;
+  _startEditing = event => {
+    event.stopPropagation();
     this.setState({ isEditing: true });
   };
-  _finishEditing = () => {
+  _finishEditing = event => {
+    event.stopPropagation();
     const { toDoValue } = this.state;
     const { id, updateToDo } = this.props;
     updateToDo(id, toDoValue);
